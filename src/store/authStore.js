@@ -3,7 +3,7 @@ import AXIOS from "../lib/axios";
 import toast from "react-hot-toast";
 import { io } from "socket.io-client";
 
-const BASE_URL =  import.meta.env.MODE==="development"?"http://localhost:5000" :"/";
+const BASE_URL = "https://ak-chat-backend.onrender.com";
 
 export const useAuthStore = create((set, get) => ({
   authUser: null,
@@ -99,17 +99,17 @@ export const useAuthStore = create((set, get) => ({
     const { authUser } = get();
     // not a user or already connected
     if (!authUser || get().socket?.connected) return;
-    console.log(authUser,"user")
+    console.log(authUser, "user");
     const socket = io(BASE_URL, {
       query: {
         userId: authUser?._id,
       },
-    });   
+    });
     socket.connect();
     set({ socket: socket });
     socket.on("getOnlineUsers", (userIds) => {
-      console.log(userIds,"userIds")
-        set({ onlineUsers: userIds });
+      console.log(userIds, "userIds");
+      set({ onlineUsers: userIds });
     });
   },
 
